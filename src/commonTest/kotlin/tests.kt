@@ -4,9 +4,11 @@ import kotlin.test.assertEquals
 class test {
     @Test
     fun test() {
-        TODO()
-//        urlbuilder(Scheme.https, "asdf.com") {
-//            "asdf" / "sdfg" / "foo" to "bar", "ssd" to "dfg"
-//        }
+        assertEquals(
+            "https://foo.com:443/asdf/sdfg?foo=bar&ssd=dfg",
+            urlbuilder(Scheme.https, "foo.com") {
+                "asdf" / "sdfg" / mapOf("foo" to "bar", "ssd" to "dfg")
+            }.toString()
+        )
     }
 }
