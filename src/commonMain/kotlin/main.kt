@@ -21,6 +21,7 @@ class urlbuilder(
     val url = url(scheme, auth, host, port)
 
     init {
+        @Suppress("unused_expression") //https://youtrack.jetbrains.com/issue/KT-21282
         block()
     }
 
