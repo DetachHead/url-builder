@@ -1,59 +1,108 @@
 enum class Scheme { http, https }
 
+//TODO: encode all the components of the URL
+
+/**
+ * an authentication that goes before the host in a [URL]
+ */
 data class authentication(val username: String, val password: String) {
-    override fun toString() = "$username:$password"
+    override fun toString() = "$username:$password@"
 }
 
-typealias Param = Pair<String, String>
-typealias Params = Map<String, String>
-typealias urlBuilderBlock = urlbuilder.() -> Unit
+/**
+ * [URL] query parameters
+ */
+data class queryparams(val value: Map<String, String> = mapOf()) : Map<String, String> by value {
+    override fun toString() =
+        value.let { if (it.isNotEmpty()) it.entries.joinToString("&", "?") { "${it.key}=${it.value}" } else "" }
+}
 
+private typealias urlBuilderBlock = urlbuilder.() -> Unit
+
+/**
+ * builds a [URL]
+ */
 class urlbuilder(
-    private val scheme: Scheme,
-    auth: authentication? = null,
-    host: String,
-    port: Int = defaultPort(scheme),
+    var scheme: Scheme,
+    var auth: authentication? = null,
+    var host: String,
+    var port: Int = defaultPort(scheme),
     block: urlBuilderBlock = {}
 ) {
+    /**
+     * constructs a [urlbuilder] without an [auth]
+     */
     constructor(scheme: Scheme, host: String, port: Int = defaultPort(scheme), block: urlBuilderBlock = {}) :
             this(scheme, null, host, port, block)
 
-    val url = url(scheme, auth, host, port)
+    /**
+     * constructs a [urlbuilder] with a [Pair] of [String]s as the [authentication]
+     */
+    constructor(
+        scheme: Scheme,
+        auth: Pair<String, String>,
+        host: String,
+        port: Int = defaultPort(scheme),
+        block: urlBuilderBlock = {}
+    ) : this(scheme, authentication(auth.first, auth.second), host, port, block)
+
+    var path = mutableListOf<String>()
+    var params = queryparams()
 
     init {
         @Suppress("unused_expression") //https://youtrack.jetbrains.com/issue/KT-21282
         block()
     }
 
-    override fun toString() = url.toString()
+    /**
+     * builds an immutable [URL] from the properties in the current [urlbuilder]
+     */
+    fun build() = URL(scheme, auth, host, port, path, params)
 
-    operator fun String.div(other: String) = url.apply { path += listOf(this@div, other) }
+    override fun toString() = build().toString()
 
-    operator fun url.div(other: String) = url.apply { path += other }
+    /**
+     * adds the two [String]s to the [path]
+     */
+    operator fun String.div(other: String) = this@urlbuilder.apply { this / this@div / other }
 
-    operator fun url.div(other: Params) = url.apply { params += other }
+    /**
+     * adds the given [String] to the [path]
+     */
+    operator fun div(other: String) = apply { path.add(other) }
 
-    operator fun url.div(other: Param) = this / mapOf(other)
+    /**
+     * takes a [Map] of [String]s and adds them to the [params] (replaces params if theyre already there)
+     */
+    operator fun div(other: Map<String, String>) = apply { params = queryparams(params + other) }
 
-    fun params(params: Params) = url.apply { this.params = params }
-
-    fun params(vararg params: Param) = params(params.toMap())
+    /**
+     * takes a [Pair] of [String]s and adds them to the [params] (replaces the param if its already there)
+     */
+    operator fun div(other: Pair<String, String>) = this / mapOf(other)
 
     companion object {
+        /**
+         * if the [port] is ommitted, determines the default based on the [scheme]
+         */
         private fun defaultPort(scheme: Scheme) = if (scheme == Scheme.http) 80 else 443
     }
 }
 
-data class url(
+/**
+ * an immutable URL
+ */
+data class URL(
     val scheme: Scheme,
     val auth: authentication? = null,
     val host: String,
     val port: Int,
     var path: List<String> = listOf(),
-    var params: Params = mapOf()
+    var params: queryparams = queryparams()
+    //TODO: fragments
 ) {
     override fun toString() = listOfNotNull(
-        "$scheme://${auth?.let { "$it@" } ?: ""}$host:$port", *path.toTypedArray()).joinToString("/") +
-            params.let { if (it.isNotEmpty()) it.entries.joinToString("&", "?") { "${it.key}=${it.value}" } else null }
-
+        "$scheme://${auth ?: ""}$host:$port", *path.toTypedArray()
+    ).joinToString("/") +
+            params
 }
