@@ -1,6 +1,6 @@
-#URL builder
+# URL builder
 an intuitive URL builder for kotlin
-###example
+### example
 ```kotlin
 assertEquals(
     "https://foo.com:443/asdf/sdfg?foo=bar&ssd=dfg",
@@ -10,5 +10,5 @@ assertEquals(
 )
 ```
 
-###disclaimer
+### disclaimer
 this is very early in development and is missing functionality such as encoding and fragments
