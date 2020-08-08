@@ -1,9 +1,17 @@
 enum class Scheme { http, https }
 
+//TODO: encode all the components of the URL
+
+/**
+ * an authentication that goes before the host in a [URL]
+ */
 data class authentication(val username: String, val password: String) {
     override fun toString() = "$username:$password@"
 }
 
+/**
+ * [URL] query parameters
+ */
 data class queryparams(val value: Map<String, String> = mapOf()) : Map<String, String> by value {
     override fun toString() =
         value.let { if (it.isNotEmpty()) it.entries.joinToString("&", "?") { "${it.key}=${it.value}" } else "" }
@@ -91,6 +99,7 @@ data class URL(
     val port: Int,
     var path: List<String> = listOf(),
     var params: queryparams = queryparams()
+    //TODO: fragments
 ) {
     override fun toString() = listOfNotNull(
         "$scheme://${auth ?: ""}$host:$port", *path.toTypedArray()
