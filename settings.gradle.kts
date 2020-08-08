@@ -7,5 +7,5 @@ pluginManagement {
         maven("https://plugins.gradle.org/m2/")
     }
 }
-rootProject.name = "url builder"
+rootProject.name = "url-builder"
 
