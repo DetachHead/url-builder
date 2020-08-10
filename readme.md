@@ -11,4 +11,4 @@ assertEquals(
 ```
 
 ### disclaimer
-this is very early in development and is missing functionality such as fragments
+this is very early in development and is missing functionality such as fragments. i am also a "newbie
