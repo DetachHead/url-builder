@@ -1,5 +1,5 @@
 # URL builder
-an intuitive URL builder for kotlin
+an intuitive URL builder for kotlin. currently supports JVM and JS targets
 ### example
 ```kotlin
 assertEquals(
