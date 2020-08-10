@@ -1,7 +1,5 @@
 enum class Scheme { http, https }
 
-//TODO: encode all the components of the URL
-
 /**
  * an authentication that goes before the host in a [URL]
  */
