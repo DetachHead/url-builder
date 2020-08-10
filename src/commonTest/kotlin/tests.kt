@@ -11,5 +11,12 @@ class test {
             }.toString()
         )
     }
-    //TODO: more tests
+
+    @Test
+    fun encode_test() {
+        assertEquals(
+            "http://foo.com:80/asdf%20asdf?foo%20bar=1",
+            urlbuilder(Scheme.http, "foo.com") { "asdf asdf" / ("foo bar" to "1") }.toString()
+        )
+    }
 }
