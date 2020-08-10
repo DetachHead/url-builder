@@ -67,6 +67,16 @@ class urlbuilder(
     operator fun String.div(other: String) = this@urlbuilder.apply { this / this@div / other }
 
     /**
+     * adds this [String] and the given [Map] of parameters to the [urlbuilder]
+     */
+    operator fun String.div(other: Map<String, String>) = this@urlbuilder.apply { this / this@div / other }
+
+    /**
+     * adds this [String] and the given [Pair] of parameters to the [urlbuilder]
+     */
+    operator fun String.div(other: Pair<String, String>) = this / mapOf(other)
+
+    /**
      * adds the given [String] to the [path]
      */
     operator fun div(other: String) = apply { path.add(other) }
