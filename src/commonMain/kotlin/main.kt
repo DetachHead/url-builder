@@ -6,7 +6,14 @@ enum class Scheme { http, https }
  * an authentication that goes before the host in a [URL]
  */
 data class authentication(val username: String, val password: String) {
-    override fun toString() = "$username:$password@"
+    override fun toString() = "${encodeURLsegment(username)}:${encodeURLsegment(password)}@"
+}
+
+data class path(val segments: List<String>) : List<String> by segments {
+    constructor(vararg segments: String) : this(segments.asList())
+
+    override fun toString() =
+        (if (segments.isNotEmpty()) "/" else "") + segments.joinToString("/") { encodeURLsegment(it) }
 }
 
 /**
@@ -14,7 +21,11 @@ data class authentication(val username: String, val password: String) {
  */
 data class queryparams(val value: Map<String, String> = mapOf()) : Map<String, String> by value {
     override fun toString() =
-        value.let { if (it.isNotEmpty()) it.entries.joinToString("&", "?") { "${it.key}=${it.value}" } else "" }
+        value.let {
+            if (it.isNotEmpty()) it.entries.joinToString("&", "?") {
+                "${encodeURLsegment(it.key)}=${encodeURLsegment(it.value)}"
+            } else ""
+        }
 }
 
 private typealias urlBuilderBlock = urlbuilder.() -> Unit
@@ -46,7 +57,7 @@ class urlbuilder(
         block: urlBuilderBlock = {}
     ) : this(scheme, authentication(auth.first, auth.second), host, port, block)
 
-    var path = mutableListOf<String>()
+    var path = path()
     var params = queryparams()
 
     init {
@@ -79,7 +90,7 @@ class urlbuilder(
     /**
      * adds the given [String] to the [path]
      */
-    operator fun div(other: String) = apply { path.add(other) }
+    operator fun div(other: String) = apply { path = path(path + other) }
 
     /**
      * takes a [Map] of [String]s and adds them to the [params] (replaces params if theyre already there)
@@ -107,12 +118,14 @@ data class URL(
     val auth: authentication? = null,
     val host: String,
     val port: Int,
-    var path: List<String> = listOf(),
+    var path: path = path(),
     var params: queryparams = queryparams()
     //TODO: fragments
 ) {
-    override fun toString() = listOfNotNull(
-        "$scheme://${auth ?: ""}$host:$port", *path.toTypedArray()
-    ).joinToString("/") +
-            params
+    override fun toString() = "$scheme://${auth ?: ""}$host:$port$path$params"
 }
+
+/**
+ * encodes a segment to be valid in a URL
+ */
+expect fun encodeURLsegment(segment: String): String
