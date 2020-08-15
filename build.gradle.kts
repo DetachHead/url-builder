@@ -16,7 +16,7 @@ dependencies {
 }
 
 kotlin {
-    js { nodejs() }
+    js(IR) { nodejs() }
     jvm {}
     sourceSets {
         val commonMain by getting {
