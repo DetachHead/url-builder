@@ -15,17 +15,20 @@ kotlin {
     js(IR) { nodejs() }
     jvm {}
     sourceSets {
+        @Suppress("unused_variable")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
+        @Suppress("unused_variable")
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
+        @Suppress("unused_variable")
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
