@@ -6,7 +6,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "org.example"
+group = "io.github.detachhead.urlbuilder"
 version = "1.0-SNAPSHOT"
 
 repositories {
