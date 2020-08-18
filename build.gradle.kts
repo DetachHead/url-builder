@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
-    kotlin("multiplatform") version "1.4.0-rc"
+    kotlin("multiplatform") version "1.4.0"
     id("org.jetbrains.dokka") version "1.4.10"
 }
 
@@ -9,7 +9,6 @@ group = "org.example"
 version = "1.0-SNAPSHOT"
 
 repositories {
-    maven("https://dl.bintray.com/kotlin/kotlin-eap")
     mavenCentral()
     jcenter()
 }
