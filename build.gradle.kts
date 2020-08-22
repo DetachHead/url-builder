@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     kotlin("multiplatform") version "1.4.0-rc"
@@ -9,6 +10,10 @@ version = "1.0-SNAPSHOT"
 repositories {
     maven("https://dl.bintray.com/kotlin/kotlin-eap")
     mavenCentral()
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.useIR = true
 }
 
 kotlin {
