@@ -1,24 +1,24 @@
-enum class Scheme { http, https }
+public enum class Scheme { http, https }
 
 /**
  * an authentication that goes before the host in a [URL]
  */
-data class authentication(val username: String, val password: String) {
-    override fun toString() = "${encodeURLsegment(username)}:${encodeURLsegment(password)}@"
+public data class authentication(val username: String, val password: String) {
+    override fun toString(): String = "${encodeURLsegment(username)}:${encodeURLsegment(password)}@"
 }
 
-data class path(val segments: List<String>) : List<String> by segments {
-    constructor(vararg segments: String) : this(segments.asList())
+public data class path(val segments: List<String>) : List<String> by segments {
+    public constructor(vararg segments: String) : this(segments.asList())
 
-    override fun toString() =
+    override fun toString(): String =
         (if (segments.isNotEmpty()) "/" else "") + segments.joinToString("/") { encodeURLsegment(it) }
 }
 
 /**
  * [URL] query parameters
  */
-data class queryparams(val value: Map<String, String> = mapOf()) : Map<String, String> by value {
-    override fun toString() =
+public data class queryparams(val value: Map<String, String> = mapOf()) : Map<String, String> by value {
+    override fun toString(): String =
         value.let {
             if (it.isNotEmpty()) it.entries.joinToString("&", "?") {
                 "${encodeURLsegment(it.key)}=${encodeURLsegment(it.value)}"
@@ -31,23 +31,23 @@ private typealias urlBuilderBlock = urlbuilder.() -> Unit
 /**
  * builds a [URL]
  */
-class urlbuilder(
-    var scheme: Scheme,
-    var auth: authentication? = null,
-    var host: String,
-    var port: Int = defaultPort(scheme),
+public class urlbuilder(
+    public var scheme: Scheme,
+    public var auth: authentication? = null,
+    public var host: String,
+    public var port: Int = defaultPort(scheme),
     block: urlBuilderBlock = {}
 ) {
     /**
      * constructs a [urlbuilder] without an [auth]
      */
-    constructor(scheme: Scheme, host: String, port: Int = defaultPort(scheme), block: urlBuilderBlock = {}) :
+    public constructor(scheme: Scheme, host: String, port: Int = defaultPort(scheme), block: urlBuilderBlock = {}) :
             this(scheme, null, host, port, block)
 
     /**
      * constructs a [urlbuilder] with a [Pair] of [String]s as the [authentication]
      */
-    constructor(
+    public constructor(
         scheme: Scheme,
         auth: Pair<String, String>,
         host: String,
@@ -55,8 +55,8 @@ class urlbuilder(
         block: urlBuilderBlock = {}
     ) : this(scheme, authentication(auth.first, auth.second), host, port, block)
 
-    var path = path()
-    var params = queryparams()
+    public var path: path = path()
+    public var params: queryparams = queryparams()
 
     init {
         @Suppress("unused_expression") //https://youtrack.jetbrains.com/issue/KT-21282
@@ -66,41 +66,42 @@ class urlbuilder(
     /**
      * builds an immutable [URL] from the properties in the current [urlbuilder]
      */
-    fun build() = URL(scheme, auth, host, port, path, params)
+    private fun build() = URL(scheme, auth, host, port, path, params)
 
-    override fun toString() = build().toString()
+    override fun toString(): String = build().toString()
 
     /**
      * adds the two [String]s to the [path]
      */
-    operator fun String.div(other: String) = this@urlbuilder.apply { this / this@div / other }
+    public operator fun String.div(other: String): urlbuilder = this@urlbuilder.apply { this / this@div / other }
 
     /**
      * adds this [String] and the given [Map] of parameters to the [urlbuilder]
      */
-    operator fun String.div(other: Map<String, String>) = this@urlbuilder.apply { this / this@div / other }
+    public operator fun String.div(other: Map<String, String>): urlbuilder =
+        this@urlbuilder.apply { this / this@div / other }
 
     /**
      * adds this [String] and the given [Pair] of parameters to the [urlbuilder]
      */
-    operator fun String.div(other: Pair<String, String>) = this / mapOf(other)
+    public operator fun String.div(other: Pair<String, String>): urlbuilder = this / mapOf(other)
 
     /**
      * adds the given [String] to the [path]
      */
-    operator fun div(other: String) = apply { path = path(path + other) }
+    public operator fun div(other: String): urlbuilder = apply { path = path(path + other) }
 
     /**
      * takes a [Map] of [String]s and adds them to the [params] (replaces params if theyre already there)
      */
-    operator fun div(other: Map<String, String>) = apply { params = queryparams(params + other) }
+    public operator fun div(other: Map<String, String>): urlbuilder = apply { params = queryparams(params + other) }
 
     /**
      * takes a [Pair] of [String]s and adds them to the [params] (replaces the param if its already there)
      */
-    operator fun div(other: Pair<String, String>) = this / mapOf(other)
+    public operator fun div(other: Pair<String, String>): urlbuilder = this / mapOf(other)
 
-    companion object {
+    private companion object {
         /**
          * if the [port] is ommitted, determines the default based on the [scheme]
          */
@@ -111,7 +112,7 @@ class urlbuilder(
 /**
  * an immutable URL
  */
-data class URL(
+public data class URL(
     val scheme: Scheme,
     val auth: authentication? = null,
     val host: String,
@@ -120,10 +121,10 @@ data class URL(
     var params: queryparams = queryparams()
     //TODO: fragments
 ) {
-    override fun toString() = "$scheme://${auth ?: ""}$host:$port$path$params"
+    override fun toString(): String = "$scheme://${auth ?: ""}$host:$port$path$params"
 }
 
 /**
  * encodes a segment to be valid in a URL
  */
-expect fun encodeURLsegment(segment: String): String
+internal expect fun encodeURLsegment(segment: String): String

@@ -1,3 +1,3 @@
-external fun encodeURIComponent(uri: String): String
+private external fun encodeURIComponent(uri: String): String
 
-actual fun encodeURLsegment(segment: String) = encodeURIComponent(segment)
+internal actual fun encodeURLsegment(segment: String): String = encodeURIComponent(segment)
