@@ -114,7 +114,7 @@ public class URLbuilder(
 
     private companion object {
         /**
-         * if the [port] is ommitted, determines the default based on the [scheme]
+         * if the [port] is omitted, determines the default based on the [scheme]
          */
         private fun defaultPort(scheme: Scheme) = if (scheme == Scheme.http) 80 else 443
     }
