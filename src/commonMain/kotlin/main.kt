@@ -26,12 +26,12 @@ public data class queryparams(val value: Map<String, String> = mapOf()) : Map<St
         }
 }
 
-private typealias urlBuilderBlock = urlbuilder.() -> Unit
+private typealias urlBuilderBlock = URLbuilder.() -> Unit
 
 /**
  * builds a [URL]
  */
-public class urlbuilder(
+public class URLbuilder(
     public var scheme: Scheme,
     public var auth: authentication? = null,
     public var host: String,
@@ -39,13 +39,13 @@ public class urlbuilder(
     block: urlBuilderBlock = {}
 ) {
     /**
-     * constructs a [urlbuilder] without an [auth]
+     * constructs a [URLbuilder] without an [auth]
      */
     public constructor(scheme: Scheme, host: String, port: Int = defaultPort(scheme), block: urlBuilderBlock = {}) :
             this(scheme, null, host, port, block)
 
     /**
-     * constructs a [urlbuilder] with a [Pair] of [String]s as the [authentication]
+     * constructs a [URLbuilder] with a [Pair] of [String]s as the [authentication]
      */
     public constructor(
         scheme: Scheme,
@@ -55,8 +55,9 @@ public class urlbuilder(
         block: urlBuilderBlock = {}
     ) : this(scheme, authentication(auth.first, auth.second), host, port, block)
 
-    public var path: path = path()
-    public var params: queryparams = queryparams()
+    private var path: path = path()
+    private var params: queryparams = queryparams()
+    private var fragment: String? = null
 
     init {
         @Suppress("unused_expression") //https://youtrack.jetbrains.com/issue/KT-21282
@@ -64,42 +65,52 @@ public class urlbuilder(
     }
 
     /**
-     * builds an immutable [URL] from the properties in the current [urlbuilder]
+     * builds an immutable [URL] from the properties in the current [URLbuilder]
      */
-    private fun build() = URL(scheme, auth, host, port, path, params)
+    private fun build() = URL(scheme, auth, host, port, path, params, fragment)
 
     override fun toString(): String = build().toString()
 
     /**
      * adds the two [String]s to the [path]
      */
-    public operator fun String.div(other: String): urlbuilder = this@urlbuilder.apply { this / this@div / other }
-
-    /**
-     * adds this [String] and the given [Map] of parameters to the [urlbuilder]
-     */
-    public operator fun String.div(other: Map<String, String>): urlbuilder =
-        this@urlbuilder.apply { this / this@div / other }
-
-    /**
-     * adds this [String] and the given [Pair] of parameters to the [urlbuilder]
-     */
-    public operator fun String.div(other: Pair<String, String>): urlbuilder = this / mapOf(other)
+    public operator fun String.div(other: String): URLbuilder = this@URLbuilder.apply { this / this@div / other }
 
     /**
      * adds the given [String] to the [path]
      */
-    public operator fun div(other: String): urlbuilder = apply { path = path(path + other) }
+    public operator fun div(other: String): URLbuilder = apply { path = path(path + other) }
+
+    /**
+     * adds this [String] and the given [Map] of parameters to the [URLbuilder]
+     */
+    public infix fun String.params(other: Map<String, String>): URLbuilder =
+        this@URLbuilder.apply { this / this@params params other }
+
+    /**
+     * adds this [String] and the given [Pair] of parameters to the [URLbuilder]
+     */
+    public infix fun String.params(other: Pair<String, String>): URLbuilder = this params mapOf(other)
 
     /**
      * takes a [Map] of [String]s and adds them to the [params] (replaces params if theyre already there)
      */
-    public operator fun div(other: Map<String, String>): urlbuilder = apply { params = queryparams(params + other) }
+    public infix fun params(other: Map<String, String>): URLbuilder = apply { params = queryparams(params + other) }
 
     /**
      * takes a [Pair] of [String]s and adds them to the [params] (replaces the param if its already there)
      */
-    public operator fun div(other: Pair<String, String>): urlbuilder = this / mapOf(other)
+    public infix fun params(other: Pair<String, String>): URLbuilder = this params mapOf(other)
+    /**
+     * takes a [Pair] of [String]s and adds them to the [params] (replaces the param if its already there)
+     */
+    public fun params(vararg other: Pair<String, String>): URLbuilder = this params other.toMap()
+
+    /** adds the given [String] as a fragment to the end of the [URLbuilder] */
+    public infix fun frag(fragment: String): URLbuilder = apply { this.fragment = fragment }
+
+    /** adds the given [String] as a fragment to the end of the [URLbuilder] */
+    public infix fun String.frag(fragment: String): URLbuilder = this@URLbuilder.apply { this frag fragment }
 
     private companion object {
         /**
@@ -118,10 +129,10 @@ public data class URL(
     val host: String,
     val port: Int,
     val path: path = path(),
-    val params: queryparams = queryparams()
-    //TODO: fragments
+    val params: queryparams = queryparams(),
+    val fragment: String? = null
 ) {
-    override fun toString(): String = "$scheme://${auth ?: ""}$host:$port$path$params"
+    override fun toString(): String = "$scheme://${auth ?: ""}$host:$port$path$params${fragment?.let { "#$it" } ?: ""}"
 }
 
 /**
