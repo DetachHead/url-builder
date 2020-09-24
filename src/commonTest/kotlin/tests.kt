@@ -19,4 +19,22 @@ class test {
             URLbuilder(Scheme.http, "foo.com") { "asdf asdf" params ("foo bar" to "1") }.toString()
         )
     }
+
+    @Test
+    fun fragment_test() {
+        assertEquals(
+            "http://foo.com:80#baz",
+            URLbuilder(Scheme.http, "foo.com") { frag("baz") }.toString()
+        )
+    }
+
+    @Test
+    fun two_params_and_a_frag() {
+        assertEquals(
+            "http://foo.com:80?foo=bar&ssd=dfg#baz",
+            URLbuilder(Scheme.http, "foo.com") {
+                params("foo" to "bar", "ssd" to "dfg") frag "baz"
+            }.toString()
+        )
+    }
 }
