@@ -59,7 +59,7 @@ publishing {
     repositories {
         maven {
             name = "myRepo"
-            url = uri("file://${buildDir}/repo")
+            url = uri("file://$buildDir/repo")
         }
     }
 }
