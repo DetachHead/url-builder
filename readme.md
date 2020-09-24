@@ -5,7 +5,7 @@ an intuitive URL builder for kotlin. currently supports JVM and JS targets
 assertEquals(
     "https://foo.com:443/asdf/sdfg?foo=bar&ssd=dfg",
     urlbuilder(Scheme.https, "foo.com") {
-        "asdf" / "sdfg" / mapOf("foo" to "bar", "ssd" to "dfg")
+        "asdf" / "sdfg" params mapOf("foo" to "bar", "ssd" to "dfg")
     }.toString()
 )
 ```
