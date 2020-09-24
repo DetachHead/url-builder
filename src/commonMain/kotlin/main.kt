@@ -117,8 +117,8 @@ public data class URL(
     val auth: authentication? = null,
     val host: String,
     val port: Int,
-    var path: path = path(),
-    var params: queryparams = queryparams()
+    val path: path = path(),
+    val params: queryparams = queryparams()
     //TODO: fragments
 ) {
     override fun toString(): String = "$scheme://${auth ?: ""}$host:$port$path$params"
