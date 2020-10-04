@@ -5,11 +5,14 @@ plugins {
     kotlin("multiplatform") version "1.4.0"
     id("org.jetbrains.dokka") version "1.4.10"
     `maven-publish`
-    id("com.jfrog.bintray") version "1.8.5"
 }
 
+val gitRepo = "DetachHead/url-builder"
+val gitURL = "https://github.com/$gitRepo"
+val publicationName = "url-builder"
+
 group = "io.github.detachhead"
-version = "1.0-SNAPSHOT"
+version = "1.0.3"
 
 repositories {
     mavenLocal()
@@ -49,28 +52,56 @@ kotlin {
             }
         }
     }
-}
-
-val sourcesJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.getByName("main").allSource)
+    configure(listOf(targets["metadata"], jvm(), js())) {
+        mavenPublication {
+            val targetPublication = this@mavenPublication
+            tasks.withType<AbstractPublishToMaven>()
+                .matching { it.publication == targetPublication }
+                .all { onlyIf { findProperty("isMainHost") == "true" } }
+        }
+    }
 }
 
 publishing {
     publications {
-        create<MavenPublication>("urlbuilder") {
+        create<MavenPublication>(publicationName) {
             groupId = project.group.toString()
             artifactId = project.name
             version = project.version.toString()
             from(components["java"])
-            artifact(sourcesJar)
+        }
+        publishing.publications.map {
+            it.name
+        }.find {
+            it != "kotlinMultiplatform"
         }
     }
+}
 
+afterEvaluate {
+    configure<PublishingExtension> {
+        publications.all {
+            val mavenPublication = this as? MavenPublication
+            mavenPublication?.artifactId =
+                "${project.name}${"-$name".takeUnless { "kotlinMultiplatform" in name }.orEmpty()}"
+        }
+    }
+}
+
+configure<PublishingExtension> {
+    publications {
+        withType<MavenPublication> {
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+        }
+    }
     repositories {
-        maven {
-            name = "detach"
-            url = uri("https://bintray.com/detachhead/detach")
+        maven("https://api.bintray.com/maven/detachhead/detach/${project.name}/;publish=1") {
+            credentials {
+                username = project.findProperty("bintrayUser").toString()
+                password = project.findProperty("bintrayKey").toString()
+            }
         }
     }
 }
