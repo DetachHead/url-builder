@@ -10,6 +10,7 @@ group = "io.github.detachhead"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    mavenLocal()
     mavenCentral()
     jcenter()
 }
