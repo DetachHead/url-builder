@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     java
     kotlin("multiplatform") version "1.4.0"
@@ -31,12 +32,14 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+
         @Suppress("unused_variable")
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
+
         @Suppress("unused_variable")
         val jsTest by getting {
             dependencies {
