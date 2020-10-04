@@ -4,7 +4,8 @@ plugins {
     java
     kotlin("multiplatform") version "1.4.0"
     id("org.jetbrains.dokka") version "1.4.10"
-    id("maven-publish")
+    `maven-publish`
+    id("com.jfrog.bintray") version "1.8.5"
 }
 
 group = "io.github.detachhead"
@@ -50,20 +51,26 @@ kotlin {
     }
 }
 
-//this is a "local" publish i think...
-//TODO: figure out how to publish to mavencentral or something..... idk what im doing
-//  https://docs.gradle.org/current/userguide/publishing_setup.html#publishing_overview:what
+val sourcesJar by tasks.creating(Jar::class) {
+    archiveClassifier.set("sources")
+    from(sourceSets.getByName("main").allSource)
+}
+
 publishing {
     publications {
         create<MavenPublication>("urlbuilder") {
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
             from(components["java"])
+            artifact(sourcesJar)
         }
     }
 
     repositories {
         maven {
-            name = "myRepo"
-            url = uri("file://$buildDir/repo")
+            name = "detach"
+            url = uri("https://bintray.com/detachhead/detach")
         }
     }
 }
