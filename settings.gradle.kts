@@ -5,6 +5,8 @@ pluginManagement {
         mavenCentral()
 
         maven("https://plugins.gradle.org/m2/")
+        gradlePluginPortal()
+        jcenter()
     }
 }
 rootProject.name = "url-builder"
