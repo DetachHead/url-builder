@@ -1,3 +1,5 @@
+package detachhead.urlbuilder
+
 public enum class Scheme { http, https }
 
 /**
