@@ -16,7 +16,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.detachhead:url-builder:1.0.4")
+                implementation("io.github.detachhead:url-builder:1.0.5")
             }
         }
     }
