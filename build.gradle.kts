@@ -12,7 +12,7 @@ val gitURL = "https://github.com/$gitRepo"
 val publicationName = "url-builder"
 
 group = "io.github.detachhead"
-version = "1.0.4"
+version = "1.0.5"
 
 repositories {
     mavenLocal()
