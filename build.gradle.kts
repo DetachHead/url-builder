@@ -99,8 +99,8 @@ configure<PublishingExtension> {
     repositories {
         maven("https://api.bintray.com/maven/detachhead/detach/${project.name}/;publish=1") {
             credentials {
-                username = project.findProperty("bintrayUser").toString()
-                password = project.findProperty("bintrayKey").toString()
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_KEY")
             }
         }
     }

@@ -1,0 +1,22 @@
+name: test and publish
+on:
+  - push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: gradle tests
+        uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-14
+  publish:
+    if: github.ref == 'refs/heads/master'
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: gradle publish
+        uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-14
+    env:
+      MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+      MAVEN_KEY: ${{ secrets.MAVEN_KEY }}
