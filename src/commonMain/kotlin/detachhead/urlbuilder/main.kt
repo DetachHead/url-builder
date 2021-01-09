@@ -20,6 +20,7 @@ public data class Path(val segments: List<String>) : List<String> by segments {
  * [URL] query parameters
  */
 public data class QueryParams(val value: Map<String, String> = mapOf()) : Map<String, String> by value {
+    public constructor(vararg value: Pair<String, String>): this(value.toMap())
     override fun toString(): String =
         value.let {
             if (it.isNotEmpty()) it.entries.joinToString("&", "?") {
