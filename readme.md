@@ -27,7 +27,7 @@ kotlin {
 ```kotlin
 assertEquals(
     "https://foo.com:443/asdf/sdfg?foo=bar&ssd=dfg",
-    urlbuilder(Scheme.https, "foo.com") {
+    URLbuilder(Scheme.https, "foo.com") {
         "asdf" / "sdfg" params mapOf("foo" to "bar", "ssd" to "dfg")
     }.toString()
 )
