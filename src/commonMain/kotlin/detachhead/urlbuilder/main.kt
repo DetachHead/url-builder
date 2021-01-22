@@ -20,7 +20,7 @@ public data class Path(val segments: List<String>) : List<String> by segments {
  * [URL] query parameters
  */
 public data class QueryParams(val value: Map<String, String> = mapOf()) : Map<String, String> by value {
-    public constructor(vararg value: Pair<String, String>): this(value.toMap())
+    public constructor(vararg value: Pair<String, String>) : this(value.toMap())
     override fun toString(): String =
         value.let {
             if (it.isNotEmpty()) it.entries.joinToString("&", "?") {
@@ -45,7 +45,7 @@ public class URLbuilder(
      * constructs a [URLbuilder] without an [auth]
      */
     public constructor(scheme: Scheme, host: String, port: Int = defaultPort(scheme), block: URLbuilderBlock = {}) :
-            this(scheme, null, host, port, block)
+        this(scheme, null, host, port, block)
 
     /**
      * constructs a [URLbuilder] with a [Pair] of [String]s as the [Authentication]
@@ -63,7 +63,7 @@ public class URLbuilder(
     private var fragment: String? = null
 
     init {
-        @Suppress("unused_expression") //https://youtrack.jetbrains.com/issue/KT-21282
+        @Suppress("unused_expression") // https://youtrack.jetbrains.com/issue/KT-21282
         block()
     }
 

@@ -3,7 +3,7 @@ import detachhead.urlbuilder.URLbuilder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class test {
+class Tests {
     @Test
     fun test() {
         assertEquals(
