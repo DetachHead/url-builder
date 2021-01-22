@@ -2,8 +2,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("multiplatform") version "1.4.0"
-    id("org.jetbrains.dokka") version "1.4.10"
+    kotlin("multiplatform") version "1.4.30-RC"
+    id("org.jetbrains.dokka") version "1.4.20"
+    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
     `maven-publish`
 }
 
@@ -12,7 +13,7 @@ val gitURL = "https://github.com/$gitRepo"
 val publicationName = "url-builder"
 
 group = "io.github.detachhead"
-version = "1.0.5"
+version = "1.0.6"
 
 repositories {
     mavenLocal()
