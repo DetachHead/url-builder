@@ -59,6 +59,39 @@ public class URLbuilder(
         block: URLbuilderBlock = {}
     ) : this(scheme, Authentication(auth.first, auth.second), host, port, block)
 
+    /**
+     * constructs a [URLbuilder] with a [Pair] of [String]s as the [Authentication] and the path as a [String]
+     */
+    public constructor(
+        scheme: Scheme,
+        auth: Pair<String, String>,
+        host: String,
+        port: Int,
+        pathString: String
+    ) : this(scheme, Authentication(auth.first, auth.second), host, port, { path = Path(pathString) })
+
+    /**
+     * constructs a [URLbuilder] without an [auth] and the path as a [String]
+     */
+    public constructor(scheme: Scheme, host: String, port: Int, pathString: String) :
+        this(scheme, null, host, port, { path = Path(pathString) })
+
+    /**
+     * constructs a [URLbuilder] with a [Pair] of [String]s as the [Authentication] and the path as a [String]
+     */
+    public constructor(
+        scheme: Scheme,
+        auth: Pair<String, String>,
+        host: String,
+        pathString: String
+    ) : this(scheme, Authentication(auth.first, auth.second), host, defaultPort(scheme), { path = Path(pathString) })
+
+    /**
+     * constructs a [URLbuilder] without an [auth] and the path as a [String]
+     */
+    public constructor(scheme: Scheme, host: String, pathString: String) :
+        this(scheme, null, host, defaultPort(scheme), { path = Path(pathString) })
+
     private var path: Path = Path()
     private var params: QueryParams = QueryParams()
     private var fragment: String? = null

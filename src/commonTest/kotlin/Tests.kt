@@ -39,4 +39,20 @@ class Tests {
             }.toString()
         )
     }
+
+    @Test
+    fun one_path_param_no_port() {
+        assertEquals(
+            "http://foo.com:80/bar",
+            URLbuilder(Scheme.http, "foo.com", "bar").toString()
+        )
+    }
+
+    @Test
+    fun one_path_param_with_port() {
+        assertEquals(
+            "http://foo.com:81/bar",
+            URLbuilder(Scheme.http, "foo.com", 81, "bar").toString()
+        )
+    }
 }
