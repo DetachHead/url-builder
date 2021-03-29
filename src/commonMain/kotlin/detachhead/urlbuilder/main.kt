@@ -21,6 +21,7 @@ public data class Path(val segments: List<String>) : List<String> by segments {
  */
 public data class QueryParams(val value: Map<String, String> = mapOf()) : Map<String, String> by value {
     public constructor(vararg value: Pair<String, String>) : this(value.toMap())
+
     override fun toString(): String =
         value.let {
             if (it.isNotEmpty()) it.entries.joinToString("&", "?") {
@@ -104,6 +105,7 @@ public class URLbuilder(
      * takes a [Pair] of [String]s and adds them to the [params] (replaces the param if its already there)
      */
     public infix fun params(other: Pair<String, String>): URLbuilder = this params mapOf(other)
+
     /**
      * takes a [Pair] of [String]s and adds them to the [params] (replaces the param if its already there)
      */
