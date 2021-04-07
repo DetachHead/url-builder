@@ -13,7 +13,7 @@ val gitURL = "https://github.com/$gitRepo"
 val publicationName = "url-builder"
 
 group = "io.github.detachhead"
-version = "1.0.7"
+version = "1.0.7-SNAPSHOT"
 
 repositories {
     mavenLocal()
@@ -85,24 +85,6 @@ afterEvaluate {
             val mavenPublication = this as? MavenPublication
             mavenPublication?.artifactId =
                 "${project.name}${"-$name".takeUnless { "kotlinMultiplatform" in name }.orEmpty()}"
-        }
-    }
-}
-
-configure<PublishingExtension> {
-    publications {
-        withType<MavenPublication> {
-            groupId = project.group.toString()
-            artifactId = project.name
-            version = project.version.toString()
-        }
-    }
-    repositories {
-        maven("https://api.bintray.com/maven/detachhead/detach/${project.name}/;publish=1") {
-            credentials {
-                username = System.getenv("MAVEN_USERNAME")
-                password = System.getenv("MAVEN_KEY")
-            }
         }
     }
 }
