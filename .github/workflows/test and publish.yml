@@ -7,8 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: gradle check
-        run: ./gradlew check
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - run: ./gradlew check
   publish:
     # TODO: uncomment this when im done testing
     # if: github.ref == 'refs/heads/master'
@@ -16,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: gradle publish
-        run: ./gradlew publishToMavenLocal
+      - uses: actions/setup-java@v2
+      - run: ./gradlew publishToMavenLocal
       - name: checkout repo
         run: cd ~/ && git clone https://github.com/DetachHead/maven.git
       - name: commit and push published package
