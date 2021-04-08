@@ -30,9 +30,9 @@ jobs:
         run: cd ~/ && git clone https://$MAVEN_REPO
       - name: commit and push published package
         run: |
-        mv ~/.m2/repository ./maven
-        cd maven
-        git config --global user.name 'github actions'
-        git config --global user.email 'your-username@users.noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@$MAVEN_REPO
-        git commit -am "publish $GITHUB_SHA" && git push
+          mv ~/.m2/repository ./maven
+          cd maven
+          git config --global user.name 'github actions'
+          git config --global user.email 'your-username@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@$MAVEN_REPO
+          git commit -am "publish $GITHUB_SHA" && git push
