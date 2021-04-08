@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: gradle tests
-        uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-14
+      - name: gradle check
+        run: ./gradlew check
   publish:
     # TODO: uncomment this when im done testing
     # if: github.ref == 'refs/heads/master'
@@ -17,9 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: gradle publish
-        uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-14
-        with:
-          args: publishToMavenLocal
+        run: ./gradlew publishToMavenLocal
       - name: checkout repo
         run: cd ~/ && git clone https://github.com/DetachHead/maven.git
       - name: commit and push published package
