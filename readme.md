@@ -5,7 +5,7 @@ an intuitive URL builder for kotlin. currently supports JVM and JS targets
 
 ```kotlin
 repositories {
-    maven("https://dl.bintray.com/detachhead/detach/")
+    maven("https://detachhead.github.io/maven")
 }
 ```
 
