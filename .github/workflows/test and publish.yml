@@ -31,4 +31,4 @@ jobs:
       - name: checkout repo
         run: cd ~/ && git clone https://github.com/DetachHead/maven.git
       - name: commit and push published package
-        run: mv ~/m2/repository ./maven && git commit -am "publish $GITHUB_SHA" && git push
+        run: mv ~/.m2/repository ./maven && git commit -am "publish $GITHUB_SHA" && git push
