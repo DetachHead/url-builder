@@ -25,14 +25,13 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - run: ./gradlew publishToMavenLocal
+      - run: ./gradlew publish
       - name: checkout repo
         run: cd ~/ && git clone https://$MAVEN_REPO
       - name: commit and push published package
         run: |
-          cd ~/
-          yes | cp -rf ./.m2/repository/. ./maven
-          cd maven
+          cd ~/maven
+          yes | cp -rf $GITHUB_WORKSPACE/maven/. ./
           git config --global user.name 'github actions'
           git config --global user.email 'detachhead@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.MAVEN_GITHUB_TOKEN }}@$MAVEN_REPO
