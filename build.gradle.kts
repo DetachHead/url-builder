@@ -100,6 +100,6 @@ configure<PublishingExtension> {
         // publish locally, then a github action pushes it to a different git repo where i'm using github pages as a maven repo
         // publishToMavenLocal doesn't seem to work, it doesn't create the js and jvm publications for some reason.
         // that's why we're running publish instead, and just setting the maven repo to a local file
-        maven("file://${System.getenv("GITHUB_WORKSPACE")}/maven")
+        maven("file://${System.getenv("HOME")}/.m2/repository")
     }
 }
