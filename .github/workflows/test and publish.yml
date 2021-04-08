@@ -18,7 +18,8 @@ jobs:
       - name: gradle publish
         uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-14
         with:
-          args: publish
-    env:
-      MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-      MAVEN_KEY: ${{ secrets.MAVEN_KEY }}
+          args: publishToMavenLocal
+      - name: checkout repo
+        run: cd ~/ && git clone https://github.com/DetachHead/maven.git
+      - name: commit and push published package
+        run: mv ~/m2/repository ./maven -r && git commit -am "publish $GITHUB_SHA" && git push
