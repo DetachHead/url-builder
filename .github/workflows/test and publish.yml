@@ -13,7 +13,6 @@ jobs:
         with:
           name: build
           path: |
-            .gradle
             build
   publish:
     # TODO: uncomment this when im done testing
