@@ -13,8 +13,7 @@ jobs:
           distribution: 'adopt'
       - run: ./gradlew check
   publish:
-    # TODO: uncomment this when im done testing
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     needs: test
     runs-on: ubuntu-latest
     env:
