@@ -20,6 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
       - run: ./gradlew publishToMavenLocal
       - name: checkout repo
         run: cd ~/ && git clone https://github.com/DetachHead/maven.git
