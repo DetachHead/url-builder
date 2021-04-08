@@ -106,7 +106,7 @@ configure<PublishingExtension> {
 
 //https://github.com/jitpack/jitpack.io/issues/4091#issuecomment-562824426
 if (System.getenv("JITPACK") == "true")
-    tasks["publish"].doLast {
+    tasks["publishToMavenLocal"].doLast {
         val commit = System.getenv("GIT_COMMIT")
         val artifacts = publishing.publications.filterIsInstance<MavenPublication>().map { it.artifactId }
 
