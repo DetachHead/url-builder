@@ -35,4 +35,5 @@ jobs:
           git config --global user.name 'github actions'
           git config --global user.email 'your-username@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@$MAVEN_REPO
-          git commit -am "publish $GITHUB_SHA" && git push
+          git add -A
+          git commit -m "publish $GITHUB_SHA" && git push
