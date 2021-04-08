@@ -10,7 +10,8 @@ jobs:
       - name: gradle tests
         uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-14
   publish:
-    if: github.ref == 'refs/heads/master'
+    # TODO: uncomment this when im done testing
+    # if: github.ref == 'refs/heads/master'
     needs: test
     runs-on: ubuntu-latest
     steps:
