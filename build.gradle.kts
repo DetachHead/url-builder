@@ -104,7 +104,7 @@ configure<PublishingExtension> {
     }
 }
 
-//https://github.com/jitpack/jitpack.io/issues/4091#issuecomment-562824426
+// https://github.com/jitpack/jitpack.io/issues/4091#issuecomment-562824426
 if (System.getenv("JITPACK") == "true")
     tasks["publishToMavenLocal"].doLast {
         val commit = System.getenv("GIT_COMMIT")
@@ -115,8 +115,10 @@ if (System.getenv("JITPACK") == "true")
 
         dir.listFiles { it -> it.name in artifacts }
             .flatMap {
-                (it.listFiles { it -> it.isDirectory }?.toList()
-                    ?: emptyList<File>()) + it.resolve("maven-metadata-local.xml")
+                (
+                    it.listFiles { it -> it.isDirectory }?.toList()
+                        ?: emptyList<File>()
+                    ) + it.resolve("maven-metadata-local.xml")
             }
             .flatMap {
                 if (it.isDirectory) {
