@@ -89,6 +89,8 @@ afterEvaluate {
     }
 }
 
+val mavenLocalUrl = "file://${System.getenv("HOME")}/.m2/repository"
+
 configure<PublishingExtension> {
     publications {
         withType<MavenPublication> {
@@ -104,7 +106,7 @@ configure<PublishingExtension> {
         //
         // also, can't use RepositoryHandler.mavenLocal because for some reason it causes the publish.doLast below to fail
         // with a `Cannot call Task.dependsOn(Object...) on task after task has started execution.` error
-        maven("file://${System.getenv("HOME")}/.m2/repository")
+        maven(mavenLocalUrl)
     }
 }
 
@@ -114,7 +116,7 @@ if (System.getenv("JITPACK") == "true")
         val commit = System.getenv("GIT_COMMIT")
         val artifacts = publishing.publications.filterIsInstance<MavenPublication>().map { it.artifactId }
 
-        val dir: File = File(publishing.repositories.mavenLocal().url)
+        val dir: File = File(publishing.repositories.maven(mavenLocalUrl).url)
             .resolve(project.group.toString().replace('.', '/'))
 
         dir.listFiles { it -> it.name in artifacts }
