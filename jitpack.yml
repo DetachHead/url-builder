@@ -1,5 +1,4 @@
 jdk:
   - openjdk10
 install:
-  # can't use publishToMavenLocal because then it won't publish the multiplatform files for some reason
   - ./gradlew publish

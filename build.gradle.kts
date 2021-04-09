@@ -88,6 +88,7 @@ afterEvaluate {
         }
     }
 }
+
 configure<PublishingExtension> {
     publications {
         withType<MavenPublication> {
@@ -100,13 +101,16 @@ configure<PublishingExtension> {
         // publish locally, then a github action pushes it to a different git repo where i'm using github pages as a maven repo
         // publishToMavenLocal doesn't seem to work, it doesn't create the js and jvm publications for some reason.
         // that's why we're running publish instead, and just setting the maven repo to a local file
+        //
+        // also, can't use RepositoryHandler.mavenLocal because for some reason it causes the publish.doLast below to fail
+        // with a `Cannot call Task.dependsOn(Object...) on task after task has started execution.` error
         maven("file://${System.getenv("HOME")}/.m2/repository")
     }
 }
 
 // https://github.com/jitpack/jitpack.io/issues/4091#issuecomment-562824426
 if (System.getenv("JITPACK") == "true")
-    tasks["publishToMavenLocal"].doLast {
+    tasks["publish"].doLast {
         val commit = System.getenv("GIT_COMMIT")
         val artifacts = publishing.publications.filterIsInstance<MavenPublication>().map { it.artifactId }
 
