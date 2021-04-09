@@ -50,3 +50,39 @@ kotlin {
         }
     }
 }
+
+if (System.getenv("JITPACK") == "true")
+    tasks["publishToMavenLocal"].doLast {
+        val commit = System.getenv("GIT_COMMIT")
+        val artifacts = publishing.publications.filterIsInstance<MavenPublication>().map { it.artifactId }
+
+        val dir: File = File(publishing.repositories.mavenLocal().url)
+            .resolve(project.group.toString().replace('.', '/'))
+
+        dir.listFiles { it -> it.name in artifacts }
+            .flatMap {
+                (
+                    it.listFiles { it -> it.isDirectory }?.toList()
+                        ?: emptyList<File>()
+                    ) + it.resolve("maven-metadata-local.xml")
+            }
+            .flatMap {
+                if (it.isDirectory) {
+                    it.listFiles { it ->
+                        it.extension == "module" ||
+                            "maven-metadata" in it.name ||
+                            it.extension == "pom"
+                    }?.toList() ?: emptyList()
+                } else listOf(it)
+            }
+            .forEach {
+                val text = it.readText()
+                val newName = "com.github.DetachHead.${project.name}"
+                println("Replacing ${project.version} with $commit and ${project.group} with $newName in $it")
+                it.writeText(
+                    text
+                        .replace(project.version.toString(), commit)
+                        .replace(project.group.toString(), newName)
+                )
+            }
+    }
