@@ -1,4 +1,2 @@
 jdk:
   - openjdk10
-install:
-  - ./gradlew publish
