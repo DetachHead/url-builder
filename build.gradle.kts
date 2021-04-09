@@ -8,10 +8,6 @@ plugins {
     `maven-publish`
 }
 
-val gitRepo = "DetachHead/url-builder"
-val gitURL = "https://github.com/$gitRepo"
-val publicationName = "url-builder"
-
 group = "io.github.detachhead"
 version = "1.0.8-SNAPSHOT"
 
