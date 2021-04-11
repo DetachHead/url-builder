@@ -46,7 +46,7 @@ tasks["publishToMavenLocal"].doFirst {
     val publishLocation = File(publishing.repositories.mavenLocal().url)
         .resolve("${project.group.toString().replace('.', '/')}/${project.name}")
     if (!version.toString()
-            .endsWith("-SNAPSHOT") &&
+        .endsWith("-SNAPSHOT") &&
         publishLocation.list()?.contains(version) == true
     )
         error("$version has already been published")
