@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     java
     kotlin("multiplatform") version "1.4.30-RC"
@@ -7,9 +5,6 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
     `maven-publish`
 }
-
-group = "com.github.DetachHead"
-version = "1.0.8-SNAPSHOT"
 
 repositories {
     mavenLocal()
