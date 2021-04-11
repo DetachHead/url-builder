@@ -1,10 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    java
-    kotlin("multiplatform") version "1.4.30-RC"
-    id("org.jetbrains.dokka") version "1.4.20"
-    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
+    kotlin("multiplatform") version "1.5.0-M2"
+    id("org.jetbrains.dokka") version "1.4.30"
+    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     `maven-publish`
 }
 
@@ -17,13 +14,9 @@ repositories {
     jcenter()
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.useIR = true
-}
-
 kotlin {
     explicitApi()
-    js(IR) { nodejs() }
+    js { nodejs() }
     jvm {}
     sourceSets {
         @Suppress("unused_variable")
