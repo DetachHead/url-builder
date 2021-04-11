@@ -24,7 +24,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - run: ./gradlew publish
+      - run: ./gradlew publishToMavenLocal
       - name: checkout repo
         run: cd ~/ && git clone https://$MAVEN_REPO
       - name: commit and push published package
