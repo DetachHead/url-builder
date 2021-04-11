@@ -1,6 +1,6 @@
 name: test and publish
 on:
-  - push
+  - pull_request
 
 jobs:
   test:
