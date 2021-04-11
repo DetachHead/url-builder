@@ -50,3 +50,11 @@ kotlin {
         }
     }
 }
+
+tasks["publishToMavenLocal"].doFirst {
+    if (!version.toString()
+        .endsWith("-SNAPSHOT") &&
+        File("${publishing.repositories.mavenLocal().url}/${project.name}").list()?.contains(version) == true
+    )
+        error("$version has already been published, can't publish again")
+}
