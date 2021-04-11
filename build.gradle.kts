@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "io.github.detachhead"
-version = "1.0.7"
+version = "1.0.7-SNAPSHOT"
 
 repositories {
     mavenLocal()
