@@ -51,5 +51,5 @@ tasks["publishToMavenLocal"].doFirst {
             .endsWith("-SNAPSHOT") &&
         publishLocation.list()?.contains(version) == true
     )
-        error("$version has already been published, can't publish again")
+        error("$version has already been published")
 }
