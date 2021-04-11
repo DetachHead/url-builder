@@ -7,4 +7,4 @@ pluginManagement {
         jcenter()
     }
 }
-rootProject.name = "url-builder"
+rootProject.name = "urlbuilder"
