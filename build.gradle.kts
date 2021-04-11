@@ -9,9 +9,7 @@ group = "io.github.detachhead"
 version = "1.0.7"
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    jcenter()
 }
 
 kotlin {
