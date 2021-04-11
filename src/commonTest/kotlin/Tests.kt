@@ -1,5 +1,5 @@
-import detachhead.urlbuilder.Scheme
-import detachhead.urlbuilder.URLbuilder
+import com.github.DetachHead.urlbuilder.Scheme
+import com.github.DetachHead.urlbuilder.URLbuilder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

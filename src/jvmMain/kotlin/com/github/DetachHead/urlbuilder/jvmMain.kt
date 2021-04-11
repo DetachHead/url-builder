@@ -1,4 +1,4 @@
-package detachhead.urlbuilder
+package com.github.DetachHead.urlbuilder
 
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets

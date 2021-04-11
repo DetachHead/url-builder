@@ -8,7 +8,7 @@ plugins {
     `maven-publish`
 }
 
-group = "io.github.detachhead"
+group = "com.github.DetachHead"
 version = "1.0.8-SNAPSHOT"
 
 repositories {

@@ -1,4 +1,4 @@
-package detachhead.urlbuilder
+package com.github.DetachHead.urlbuilder
 
 public external fun encodeURIComponent(uri: String): String
 
