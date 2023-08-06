@@ -1,3 +1,4 @@
+
 import detachhead.urlbuilder.Scheme
 import detachhead.urlbuilder.URLbuilder
 import kotlin.test.Test
@@ -54,5 +55,17 @@ class Tests {
             "http://foo.com:81/bar",
             URLbuilder(Scheme.http, "foo.com", 81, "bar").toString()
         )
+    }
+
+    @Test
+    fun copying_and_mutability() {
+        val first = URLbuilder(Scheme.http, "foo.com") { "a" / "b" }.build()
+        val secondBuilder = URLbuilder(first)
+        secondBuilder.path.removeAt(0)
+        val second = secondBuilder.build()
+        second.toString()
+        // make sure the first one didn't change
+        assertEquals("http://foo.com:80/a/b", first.toString())
+        assertEquals("http://foo.com:80/b", second.toString())
     }
 }
