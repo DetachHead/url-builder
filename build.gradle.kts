@@ -22,7 +22,6 @@ kotlin {
         }
     }
     sourceSets {
-        @Suppress("unused_variable")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
