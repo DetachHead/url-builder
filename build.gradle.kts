@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.detachhead"
-version = "1.0.7"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
@@ -35,11 +35,12 @@ val publishToGithubPages: Task by tasks.creating {
     doFirst {
         val publishLocation = File(publishing.repositories.mavenLocal().url)
             .resolve("${project.group.toString().replace('.', '/')}/${project.name}")
-        if (!version.toString()
-            .endsWith("-SNAPSHOT") &&
-            publishLocation.list()?.contains(version) == true
-        )
-            error("$version has already been published")
+        if (System.getenv("GITHUB_BASE_REF") == "master") {
+            if (publishLocation.list()?.contains(version) == true)
+                version = "$version-SNAPSHOT"
+        } else {
+            version = "$version-${System.getenv("GITHUB_SHA")}"
+        }
     }
     finalizedBy(tasks.publishToMavenLocal)
 }
