@@ -14,7 +14,7 @@ jobs:
           distribution: 'adopt'
       - run: ./gradlew check
   publish:
-    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' }}
     needs: test
     runs-on: ubuntu-latest
     env:
@@ -31,6 +31,9 @@ jobs:
           git clone https://$MAVEN_REPO
           mv maven repository
       - run: ./gradlew publishToGithubPages
+        env:
+          GITHUB_BASE_REF: ${{ vars.GITHUB_BASE_REF }}
+          GITHUB_SHA: ${{ vars.GITHUB_SHA }}
       - name: commit and push published package
         run: |
           cd ~/.m2/repository
